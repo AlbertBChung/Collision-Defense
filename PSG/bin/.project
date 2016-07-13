@@ -14,11 +14,4 @@
 	<natures>
 		<nature>org.eclipse.jdt.core.javanature</nature>
 	</natures>
-	<linkedResources>
-		<link>
-			<name>src/spritesheet.png</name>
-			<type>1</type>
-			<locationURI>PARENT-2-PROJECT_LOC/Github/ProtectShootGame/PSG/spritesheet.png</locationURI>
-		</link>
-	</linkedResources>
 </projectDescription>

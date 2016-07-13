@@ -15,7 +15,7 @@ public class IDGameLoop extends JPanel implements Runnable{
 	private int tps;
 	private int width;
 	private int height;
-	
+	private int counter;
 	public Graphics2D graphics2D;
 	private BufferedImage img;
 	
@@ -44,11 +44,14 @@ public class IDGameLoop extends JPanel implements Runnable{
 	
 
 	public void run() {
+	
+		
 	//initialization
 	init();	
 		
 	long lastTime = System.nanoTime();
-	double nsPerTick = 1000000000D / currFPS;
+	//added 2 zero
+	double nsPerTick = 100000000000D / currFPS;
 	int frames = 0;
 	int ticks = 0;
 	long lastTimer = System.currentTimeMillis();
@@ -70,18 +73,25 @@ public class IDGameLoop extends JPanel implements Runnable{
 			render();
 		}
 		try {	Thread.sleep(2);} catch (InterruptedException e) {e.printStackTrace();}
-		if (System.currentTimeMillis() - lastTimer >= 1000){
-			lastTimer += 1000;
+		if (System.currentTimeMillis() - lastTimer >= 100){
+			lastTimer += 100;
 			tps = frames;
 			fps = ticks;
 			frames = 0;
 			ticks = 0;
 		}
+	
+	
+		if(counter == 1){
+			try {	Thread.sleep(2000);} catch (InterruptedException e) {e.printStackTrace();}
+			
+		}
+		counter++;
+
 	}
 	
 	
-	
-	}
+}
 	
 	public void init() {
 		img = new BufferedImage(width,height,BufferedImage.TYPE_INT_RGB);
@@ -106,5 +116,6 @@ public class IDGameLoop extends JPanel implements Runnable{
 		}
 		g2.dispose();
 	}
+	
 
 }

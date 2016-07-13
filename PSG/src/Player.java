@@ -10,13 +10,17 @@ import java.util.ArrayList;
 public class Player implements KeyListener {
 
 	Vector2F pos;
-	private int width = 32;
-	private int height= 32;
+	public static int width = 50;
+	public static int height= 50;
 	private static boolean up,down,left,right;
-	private float speed = 1F;
+	private float speed = 50F;
 	private float fixDt = 1f/60F;
 	public static boolean isJumping,isFalling;
 	public static int counter = 0;
+	public boolean directionIsRight;
+	public static int ammo=100;
+	public static int health=5;
+	public static boolean dead;
 	private int animationState = 0 ;
 	private ArrayList<BufferedImage> listUp;
 	Animator ani_up;
@@ -26,6 +30,10 @@ public class Player implements KeyListener {
 	Animator ani_left;
 	private ArrayList<BufferedImage> listRight;
 	Animator ani_right;
+	private ArrayList<BufferedImage> listIdle;
+	Animator ani_idle;
+	private ArrayList<BufferedImage> listDeath;
+	Animator ani_death;
 	
 	
 	public Player() {
@@ -37,6 +45,8 @@ public class Player implements KeyListener {
 		listDown = new ArrayList<BufferedImage>();
 		listRight = new ArrayList<BufferedImage>();
 		listLeft = new ArrayList<BufferedImage>();
+		listIdle = new ArrayList<BufferedImage>();
+		listDeath = new ArrayList<BufferedImage>();
 		
 		listUp.add(Assets.player.getTile(0, 0, 16, 16));
 		listUp.add(Assets.player.getTile(16, 0, 16, 16));
@@ -46,7 +56,10 @@ public class Player implements KeyListener {
 		listRight.add(Assets.player.getTile(16, 0, 16, 16));
 		listLeft.add(Assets.player.getTile(0, 0, 16, 16));
 		listLeft.add(Assets.player.getTile(16, 0, 16, 16));
-		
+		listIdle.add(Assets.player.getTile(0, 0, 16, 16));
+		listIdle.add(Assets.player.getTile(16, 0, 16, 16));
+		listDeath.add(Assets.player.getTile(0, 16, 16, 16));
+		listDeath.add(Assets.player.getTile(16,16, 16, 16));
 		
 		ani_up = new Animator(listUp);
 		ani_up .setSpeed(180);
@@ -60,6 +73,12 @@ public class Player implements KeyListener {
 		ani_left = new Animator(listLeft);
 		ani_left .setSpeed(180);
 		ani_left.play();
+		ani_idle = new Animator(listIdle);
+		ani_idle .setSpeed(180);
+		ani_idle.play();
+		ani_death = new Animator(listDeath);
+		ani_death .setSpeed(180);
+		ani_death.play();
 		
 	}
 
@@ -71,7 +90,7 @@ public class Player implements KeyListener {
 	//}
 //	
 //	if(isFalling){
-//		pos.ypos+=moveAmount; counter++;
+//		pos.ypos+=moveAmount; counter++;pp
 //	if (counter == 4990){counter=0;isFalling=false;}
 	//}
 	public void tick(double deltaTime) {
@@ -92,6 +111,18 @@ public class Player implements KeyListener {
 				pos.ypos-=moveAmount;
 				animationState = 0;
 			}
+			else{
+				if(Check.CollisionReload(
+
+						  new Point((int) (pos.xpos + GameLoop.map.xpos) ,
+						     (int) (pos.ypos + GameLoop.map.ypos - moveAmount)),
+						          
+						  new Point((int) (pos.xpos + GameLoop.map.xpos + width) , 
+						            (int) (pos.ypos + GameLoop.map.ypos - moveAmount))  ))
+				{
+				Player.ammo=10;
+				}
+			}
 			
 		
 			
@@ -110,10 +141,23 @@ public class Player implements KeyListener {
 				pos.ypos+=moveAmount;
 				animationState = 1;
 			}
+			else{
+				if(Check.CollisionReload(
+
+						  new Point((int) (pos.xpos + GameLoop.map.xpos) ,
+						     (int) (pos.ypos + GameLoop.map.ypos +height+ moveAmount)),
+						          
+						  new Point((int) (pos.xpos + GameLoop.map.xpos + width) , 
+						            (int) (pos.ypos + GameLoop.map.ypos +height+ moveAmount))  ))
+				{
+				Player.ammo=10;
+				}
+			}
 				
 			
 		}
-		if(left){
+		if(left ){
+			directionIsRight =false;
 			if(!Check.CollisionPlayerBlock(
 				      
 					  new Point((int) (pos.xpos + GameLoop.map.xpos-moveAmount) ,
@@ -125,10 +169,23 @@ public class Player implements KeyListener {
 			pos.xpos-=moveAmount;
 			animationState = 3;
 			}
+			else{
+				if(Check.CollisionReload(
+
+						  new Point((int) (pos.xpos + GameLoop.map.xpos-moveAmount) ,
+						     (int) (pos.ypos + GameLoop.map.ypos +height)),
+						          
+						  new Point((int) (pos.xpos + GameLoop.map.xpos -moveAmount) , 
+						            (int) (pos.ypos + GameLoop.map.ypos))  ))
+				{
+				Player.ammo=10;
+				}
+			}
 		}
 		if(right){
+			directionIsRight = true;
 			if(!Check.CollisionPlayerBlock(
-				      
+			 
 					  new Point((int) (pos.xpos + GameLoop.map.xpos+width +moveAmount) ,
 					     (int) (pos.ypos + GameLoop.map.ypos)),
 					          
@@ -138,9 +195,24 @@ public class Player implements KeyListener {
 			pos.xpos+=moveAmount;
 			animationState = 2;
 			}
+			else{
+				if(Check.CollisionReload(
+						 
+						  new Point((int) (pos.xpos + GameLoop.map.xpos+width +moveAmount) ,
+						     (int) (pos.ypos + GameLoop.map.ypos)),
+						          
+						  new Point((int) (pos.xpos + GameLoop.map.xpos+width +moveAmount) , 
+						            (int) (pos.ypos + GameLoop.map.ypos+height))  ))
+				{
+				Player.ammo=100;
+				}
+			}
 		}
-		if (!up && !down && !left && !right){
+		if (!up && !down && !left && !right && !dead){
 			animationState = 4;
+		}
+		if(dead){
+			animationState = 5;
 		}
 		
 		
@@ -163,7 +235,16 @@ public class Player implements KeyListener {
 			g.drawImage(ani_left.sprite,(int)pos.xpos, (int)pos.ypos, width,height,null);
 			if (left){ani_left.update(System.currentTimeMillis());}
 		}
+		if(animationState == 4){
+			g.drawImage(ani_idle.sprite,(int)pos.xpos, (int)pos.ypos, width,height,null);
+			if (!up && !down && !left && !right){ani_idle.update(System.currentTimeMillis());}
+		}
+		if(animationState == 5){
+			g.drawImage(ani_death.sprite,(int)pos.xpos, (int)pos.ypos, width,height,null);
+			if (dead){ani_death.update(System.currentTimeMillis());}
+		}
 		
+		g.drawString("Ammo #: "+String.valueOf(ammo)+"     " + "Health: "+String.valueOf(health), pos.xpos, pos.ypos);
 	}
 
 	public void keyPressed(KeyEvent e) {
@@ -181,6 +262,7 @@ public class Player implements KeyListener {
 		if(key == KeyEvent.VK_D){
 			right = true;
 		}
+		
 		
 	}
 

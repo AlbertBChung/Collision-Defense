@@ -11,6 +11,8 @@ public class Block extends Rectangle{
 	private BlockType blocktype;
 	private BufferedImage block;
 	private boolean isSolid;
+	private boolean passable;
+	public boolean isReloadCenter;
 	
 	public Block(Vector2F pos, BlockType blocktype) {
 		setBounds((int)pos.xpos, (int)pos.ypos, BlockSize, BlockSize);
@@ -23,6 +25,14 @@ public class Block extends Rectangle{
 		this.isSolid = isSolid;
 		return this;
 	}
+	public Block isPassable(boolean passable){
+		this.passable = passable;
+		return this;
+	}
+	public Block isReloadCenter(boolean isReloadCenter){
+		this.isReloadCenter=isReloadCenter;
+		return this;
+	}
 	
 	public void init(){
 		switch(blocktype){
@@ -32,6 +42,13 @@ public class Block extends Rectangle{
 		case Wall_1:
 			block = Assets.getWall_1();
 			break;
+		case Wall_2:
+			block = Assets.getWall_2();
+			break;
+		case Reload_1:
+			block = Assets.getReload_1();
+			break;
+			
 		
 		}
 	}
@@ -40,7 +57,7 @@ public class Block extends Rectangle{
 		setBounds((int)pos.xpos, (int)pos.ypos, BlockSize, BlockSize);
 	}
 	public void render(Graphics2D g){
-		g.drawRect((int)pos.getWorldLocation().xpos, (int)pos.getWorldLocation().ypos, BlockSize, BlockSize );
+		//g.drawRect((int)pos.getWorldLocation().xpos, (int)pos.getWorldLocation().ypos, BlockSize, BlockSize );
 		g.drawImage(block,(int)pos.getWorldLocation().xpos, (int)pos.getWorldLocation().ypos,BlockSize,BlockSize,null);
 		
 		if(isSolid){
@@ -50,11 +67,17 @@ public class Block extends Rectangle{
 
 	public enum BlockType{
 		Stone_1,
-		Wall_1
+		Wall_1, Wall_2,Reload_1
 	}
 
 	public boolean isSolid() {
 		return isSolid;
 	}	
+	public boolean isPassable(){
+		return passable;
+	}
+	public boolean isReloadCenter(){
+		return isReloadCenter;
+	}
 
 }

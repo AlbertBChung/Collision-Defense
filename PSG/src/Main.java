@@ -11,7 +11,7 @@ public class Main {
 	public static GraphicsDevice gd = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
 	public static int width = gd.getDisplayMode().getWidth();
 	public static int height = gd.getDisplayMode().getHeight();
-	
+	public static MouseManager mouse = new MouseManager();
 	
 	
 	
@@ -22,6 +22,8 @@ public class Main {
 		Screen frame = new Screen("Protect Game", width, height);
 		frame.setFullscreen(1);
 		frame.addKeyListener(new Player());
+		frame.addMouseListener(mouse);
+		frame.addMouseMotionListener(mouse);
 		frame.add(new GameLoop(width, height));
 		frame.setVisible(true);
 	}
