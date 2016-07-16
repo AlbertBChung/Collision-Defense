@@ -20,7 +20,7 @@ public class IDGameLoop extends JPanel implements Runnable{
 	private BufferedImage img;
 	
 	
-	private static double currFPS = 120D;
+	private static double currFPS = 60D;
 	  
 	public IDGameLoop(int width , int height) {
 		this.width = width;
@@ -51,7 +51,7 @@ public class IDGameLoop extends JPanel implements Runnable{
 		
 	long lastTime = System.nanoTime();
 	//added 2 zero
-	double nsPerTick = 100000000000D / currFPS;
+	double nsPerTick = 1000000000D / currFPS;
 	int frames = 0;
 	int ticks = 0;
 	long lastTimer = System.currentTimeMillis();
@@ -60,6 +60,8 @@ public class IDGameLoop extends JPanel implements Runnable{
 	while(running){
 		long now = System.nanoTime();
 		deltaTime += (now - lastTime)/nsPerTick;
+		lastTime = now;
+		
 		boolean shouldRender = false;
 		
 		while (deltaTime >= 1 ){
@@ -68,15 +70,16 @@ public class IDGameLoop extends JPanel implements Runnable{
 			deltaTime -=1;
 			shouldRender = true;
 		}
+
+		//try {	Thread.sleep(2);} catch (InterruptedException e) {e.printStackTrace();}
+		
 		if(shouldRender == true){
 			frames++;
 			render();
 		}
-		try {	Thread.sleep(2);} catch (InterruptedException e) {e.printStackTrace();}
-		if (System.currentTimeMillis() - lastTimer >= 100){
-			lastTimer += 100;
-			tps = frames;
-			fps = ticks;
+
+		if (System.currentTimeMillis() - lastTimer >= 1000){
+			lastTimer += 1000;
 			frames = 0;
 			ticks = 0;
 		}

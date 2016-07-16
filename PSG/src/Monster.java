@@ -29,6 +29,7 @@ public class Monster extends Rectangle{
 	boolean justKB;
 	int hitcounter;
 	int knockbackDistance;
+	int knockbackSpeed=3;
 	
 	public Monster(float xpos, float ypos, float speed, boolean directionIsRight, int size){
 		pos.xpos=xpos;
@@ -67,8 +68,8 @@ private void move(boolean directionIsRight){
 		if(justKB)
 		{
 		double distance = Math.sqrt(Math.pow(Math.abs(pos.xpos-tempDestination.xpos),2)+Math.pow(Math.abs(pos.ypos-tempDestination.ypos),2));
-		dx=(tempDestination.xpos-pos.xpos)/(distance/.5);
-		dy=(tempDestination.ypos-pos.ypos)/(distance/.5);
+		dx=(tempDestination.xpos-pos.xpos)/(distance/knockbackSpeed);
+		dy=(tempDestination.ypos-pos.ypos)/(distance/knockbackSpeed);
 		}
 		justKB=false;
 		hitcounter++;

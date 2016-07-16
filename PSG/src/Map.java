@@ -74,10 +74,10 @@ public class Map {
 		long timern = System.currentTimeMillis();
 		if (timern-time>=5000){
 			time = timern;
-			makeMonster(50,0.04f);
+			makeMonster(50,.5f);
 			spawnCounter++;
 			if(spawnCounter%4==0){
-				makeMonster(100,0.02f);
+				makeMonster(100,.5f);
 			}
 			
 		}

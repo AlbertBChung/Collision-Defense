@@ -11,7 +11,7 @@ public class Bullet {
 	public static int width=10;
 	public static int height=5;
 	Vector2F destination = new Vector2F();
-	public static double speed = .5;
+	public static double speed = 7;
 	double distance; 
 	double dx,dy;
 	

@@ -13,7 +13,7 @@ public class Player implements KeyListener {
 	public static int width = 50;
 	public static int height= 50;
 	private static boolean up,down,left,right;
-	private float speed = 50F;
+	private float speed = 100F;
 	private float fixDt = 1f/60F;
 	public static boolean isJumping,isFalling;
 	public static int counter = 0;
