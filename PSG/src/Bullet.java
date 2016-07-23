@@ -1,4 +1,4 @@
-package src;
+
 
 import java.awt.Graphics2D;
 import java.awt.Point;
@@ -8,8 +8,8 @@ public class Bullet {
 	
 	Vector2F pos = new Vector2F();
 	public boolean directionIsRight;
-	public static int width=10;
-	public static int height=5;
+	public static int width=50;
+	public static int height=20;
 	Vector2F destination = new Vector2F();
 	public static double speed = 7;
 	double distance; 
@@ -42,7 +42,12 @@ public class Bullet {
 		
 	}
 	public void render(Graphics2D g){
-		g.fillRect((int)(getxpos()+Bullet.width),(int)getypos()+height/2,Bullet.width,Bullet.height);
-		//g.fillRect((int)pos.xpos, (int)pos.ypos, Bullet.width, Bullet.height);
+	
+		if(this.directionIsRight)
+			g.drawImage(Assets.bulletRight,(int)(getxpos()+Bullet.width),(int)getypos()+height/2,Bullet.width,Bullet.height,null);
+		else
+			g.drawImage(Assets.bulletLeft,(int)(getxpos()+Bullet.width),(int)getypos()+height/2,Bullet.width,Bullet.height,null);
+		
+			
 	}
 }

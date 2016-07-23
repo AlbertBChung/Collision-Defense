@@ -1,4 +1,4 @@
-package src;
+
 
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
@@ -8,16 +8,16 @@ public class Block extends Rectangle{
 
 	Vector2F pos = new Vector2F();
 	private int BlockSize = 32;
-	private BlockType blocktype;
+	private String blocktype;
 	private BufferedImage block;
 	private boolean isSolid;
 	private boolean passable;
 	public boolean isReloadCenter;
 	
-	public Block(Vector2F pos, BlockType blocktype) {
+	public Block(Vector2F pos, String wall1) {
 		setBounds((int)pos.xpos, (int)pos.ypos, BlockSize, BlockSize);
 		this.pos = pos;
-		this.blocktype=blocktype;
+		this.blocktype=wall1;
 		init();
 	}
 	
@@ -36,16 +36,16 @@ public class Block extends Rectangle{
 	
 	public void init(){
 		switch(blocktype){
-		case Stone_1:
+		case "Stone_1":
 			block = Assets.getStone_1();
 			break;
-		case Wall_1:
+		case "Wall_1":
 			block = Assets.getWall_1();
 			break;
-		case Wall_2:
+		case "Wall_2":
 			block = Assets.getWall_2();
 			break;
-		case Reload_1:
+		case "Reload_1":
 			block = Assets.getReload_1();
 			break;
 			

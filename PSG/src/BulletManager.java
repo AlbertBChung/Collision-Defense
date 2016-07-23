@@ -1,4 +1,5 @@
-package src;
+
+
 
 import java.awt.Graphics2D;
 import java.awt.Point;
@@ -13,32 +14,21 @@ public class BulletManager {
 	public BulletManager() {
 		
 	}
-	public static void knockback(Point p1, Point p2, Monster mon){
-		//sets the perpendicular knockback info
-		
-		mon.hit=true;
-		mon.justKB=true;
-		
-		double xContact = p1.getX()-Bullet.speed;
-		double yContact = ((p1.getY()+p2.getY())/2);
-		Vector2F center = mon.getCenter();
-		double distance = Math.sqrt(Math.pow(center.xpos-xContact,2)+Math.pow(center.ypos-yContact,2));
-		double xdestination = (center.xpos -xContact)*(mon.knockbackDistance/distance);
-		double ydestination = (center.ypos -yContact)*(mon.knockbackDistance/distance);
-		mon.tempDestination=new Vector2F((float)(mon.getX()+xdestination),(float)(mon.getY()+ydestination));
-		
-		
-	}
+	
 	
 	public void init(){}
 	public void tick (double deltaTime){
 		//we cant access bullet while traversing bulletlist??
 		//now we have  alot of lag.
 		
+		//if bullet collides with wall -> add
+		//if bullet collides with mon -> add
+		
 		ArrayList<Bullet> newbulletlist = new ArrayList<Bullet>();
 		for(int i =0;i<bulletlist.size();i++){
-			newbulletlist.add(bulletlist.get(i));
+			newbulletlist.add(bulletlist.get(i));	
 		}
+		
 		for(int i =0;i<newbulletlist.size();i++){
 		
 			

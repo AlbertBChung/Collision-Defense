@@ -1,4 +1,4 @@
-package src;
+
 import java.awt.GraphicsEnvironment;
 import java.awt.GraphicsDevice;
 import javax.swing.JFrame;

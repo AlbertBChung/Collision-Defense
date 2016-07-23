@@ -1,4 +1,5 @@
-package src;
+
+
 
 import java.awt.Graphics2D;
 import java.awt.Point;
@@ -70,6 +71,7 @@ private void move(boolean directionIsRight){
 		double distance = Math.sqrt(Math.pow(Math.abs(pos.xpos-tempDestination.xpos),2)+Math.pow(Math.abs(pos.ypos-tempDestination.ypos),2));
 		dx=(tempDestination.xpos-pos.xpos)/(distance/knockbackSpeed);
 		dy=(tempDestination.ypos-pos.ypos)/(distance/knockbackSpeed);
+		
 		}
 		justKB=false;
 		hitcounter++;
@@ -89,13 +91,15 @@ private void move(boolean directionIsRight){
 		time=timern;
 		dx=(tempDestination.xpos-pos.xpos)/(distance/speed);
 		dy=(tempDestination.ypos-pos.ypos)/(distance/speed);
+		
 	}
-	
 	
 	
 	pos.xpos+=dx;
 	pos.ypos+=dy;
-
+	
+	
+	
 }
 
 
@@ -108,12 +112,15 @@ public void tick(double deltaTime){
 		if(this.hit)
 		{
 		move(directionIsRight);
-		if(Math.abs(pos.xpos-tempDestination.xpos) <3 && Math.abs(pos.ypos-tempDestination.ypos)<3){hit=false;}
+		if(Math.abs(pos.xpos-tempDestination.xpos) <3 && Math.abs(pos.ypos-tempDestination.ypos)<3){hit=false;
+		
+		}
 		int indexOfRecipient = Check.indexMonWithMon(new Point((int)pos.xpos,(int)pos.ypos),new Point((int)pos.xpos+this.width,(int)pos.ypos),new Point((int)pos.xpos,(int)pos.ypos+this.height), 
 				new Point((int)pos.xpos+this.width,(int)pos.ypos+this.height),this);
 			if(indexOfRecipient>=0)
 			{	
 				MonsterManager.eraseIndex.add(indexOfRecipient);
+				Player.score+=2;
 				for(int i =0; i<MonsterManager.monsterlist.size();i++){
 					if(this.equals(MonsterManager.monsterlist.get(i))){
 						MonsterManager.eraseIndex.add(i);break;

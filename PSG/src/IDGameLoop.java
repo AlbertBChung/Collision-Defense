@@ -1,4 +1,4 @@
-package src;
+
 
 import java.awt.Dimension;
 import java.awt.Graphics;
@@ -63,33 +63,32 @@ public class IDGameLoop extends JPanel implements Runnable{
 		lastTime = now;
 		
 		boolean shouldRender = false;
+
 		
+
 		while (deltaTime >= 1 ){
 			ticks++;
 			tick(deltaTime);
 			deltaTime -=1;
 			shouldRender = true;
+
 		}
 
-		//try {	Thread.sleep(2);} catch (InterruptedException e) {e.printStackTrace();}
-		
 		if(shouldRender == true){
 			frames++;
 			render();
 		}
 
+		//try {	Thread.sleep(2);} catch (InterruptedException e) {e.printStackTrace();}
 		if (System.currentTimeMillis() - lastTimer >= 1000){
+
 			lastTimer += 1000;
 			frames = 0;
 			ticks = 0;
 		}
 	
 	
-		if(counter == 1){
-			try {	Thread.sleep(2000);} catch (InterruptedException e) {e.printStackTrace();}
-			
-		}
-		counter++;
+		
 
 	}
 	

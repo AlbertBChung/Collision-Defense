@@ -1,4 +1,5 @@
-package src;
+
+
 
 import java.awt.Graphics2D;
 import java.awt.Point;
@@ -10,18 +11,22 @@ import java.util.ArrayList;
 public class Player implements KeyListener {
 
 	Vector2F pos;
-	public static int width = 50;
-	public static int height= 50;
-	private static boolean up,down,left,right;
-	private float speed = 100F;
+	public static int width =70;
+	public static int height= 70;
+	public static boolean up,down,left,right;
+	private static boolean dash;
+	private static float speed = 100F;
 	private float fixDt = 1f/60F;
 	public static boolean isJumping,isFalling;
 	public static int counter = 0;
 	public boolean directionIsRight;
-	public static int ammo=100;
+	public static int ammo=1000;
 	public static int health=5;
 	public static boolean dead;
+	public static int score;
 	private int animationState = 0 ;
+	private static long dashtime;
+	public static long dashCooldownTime;
 	private ArrayList<BufferedImage> listUp;
 	Animator ani_up;
 	private ArrayList<BufferedImage> listDown;
@@ -36,8 +41,9 @@ public class Player implements KeyListener {
 	Animator ani_death;
 	
 	
+	
 	public Player() {
-		pos  = new Vector2F(Main.width/2 - width/2, Main.height/2-height/2);
+		pos  = new Vector2F(Applet.width/2 - width/2, Applet.height/2-height/2);
 	}
 
 	public void init() {
@@ -48,16 +54,36 @@ public class Player implements KeyListener {
 		listIdle = new ArrayList<BufferedImage>();
 		listDeath = new ArrayList<BufferedImage>();
 		
-		listUp.add(Assets.player.getTile(0, 0, 16, 16));
-		listUp.add(Assets.player.getTile(16, 0, 16, 16));
-		listDown.add(Assets.player.getTile(0, 0, 16, 16));
-		listDown.add(Assets.player.getTile(16, 0, 16, 16));
-		listRight.add(Assets.player.getTile(0, 0, 16, 16));
-		listRight.add(Assets.player.getTile(16, 0, 16, 16));
-		listLeft.add(Assets.player.getTile(0, 0, 16, 16));
-		listLeft.add(Assets.player.getTile(16, 0, 16, 16));
-		listIdle.add(Assets.player.getTile(0, 0, 16, 16));
-		listIdle.add(Assets.player.getTile(16, 0, 16, 16));
+		listUp.add(Assets.player.getTile(0, 90, 18, 29));
+		listUp.add(Assets.player.getTile(18, 90, 18, 29));
+		listUp.add(Assets.player.getTile(36, 90, 18, 29));
+		listUp.add(Assets.player.getTile(54, 90, 18, 29));
+		listUp.add(Assets.player.getTile(72, 90, 18, 29));
+		listUp.add(Assets.player.getTile(90, 90,18, 29));
+		listUp.add(Assets.player.getTile(108, 90,18, 29));
+		listUp.add(Assets.player.getTile(126, 90, 18, 29));
+		
+		listDown.add(Assets.player.getTile(0, 61, 18, 29));
+		listDown.add(Assets.player.getTile(18, 61, 18, 29));
+		listDown.add(Assets.player.getTile(36, 61, 18, 29));
+		listDown.add(Assets.player.getTile(54, 61, 18, 29));
+		listDown.add(Assets.player.getTile(72, 61, 18, 29));
+		listDown.add(Assets.player.getTile(90, 61,18, 29));
+		listDown.add(Assets.player.getTile(108,61,18, 29));
+		listDown.add(Assets.player.getTile(126, 61, 18, 29));
+		
+		
+		listRight.add(Assets.player.getTile(0, 119, 18, 31));
+		listRight.add(Assets.player.getTile(18, 119, 18, 31));
+		
+		listLeft.add(Assets.player.getTile(0, 150, 18, 31));
+		listLeft.add(Assets.player.getTile(18, 150, 18, 31));
+		
+		listIdle.add(Assets.player.getTile(0, 32, 18, 29));
+		listIdle.add(Assets.player.getTile(18, 32, 18, 29));
+		listIdle.add(Assets.player.getTile(36, 32, 18, 29));
+		listIdle.add(Assets.player.getTile(54, 32, 18, 29));
+		
 		listDeath.add(Assets.player.getTile(0, 16, 16, 16));
 		listDeath.add(Assets.player.getTile(16,16, 16, 16));
 		
@@ -82,6 +108,7 @@ public class Player implements KeyListener {
 		
 	}
 
+
 	//if(isJumping){
 	//	
 	//	pos.ypos-=moveAmount;
@@ -96,6 +123,10 @@ public class Player implements KeyListener {
 	public void tick(double deltaTime) {
 		
 		float moveAmount = (float)(speed*fixDt);
+		if(Player.dash){
+			
+			if(System.currentTimeMillis()-Player.dashtime>=75){ Player.speed/=10; Player.dash=false;}
+		}
 		
 		
 		if(up){
@@ -244,8 +275,7 @@ public class Player implements KeyListener {
 			if (dead){ani_death.update(System.currentTimeMillis());}
 		}
 		
-		g.drawString("Ammo #: "+String.valueOf(ammo)+"     " + "Health: "+String.valueOf(health), pos.xpos, pos.ypos);
-	}
+		}
 
 	public void keyPressed(KeyEvent e) {
 		int key = e.getKeyCode();
@@ -261,6 +291,18 @@ public class Player implements KeyListener {
 		}
 		if(key == KeyEvent.VK_D){
 			right = true;
+		}
+		if(key == KeyEvent.VK_SPACE){
+			long timern=System.currentTimeMillis();
+			if(timern-dashCooldownTime>1000){
+			dashCooldownTime=timern;
+			Player.dash=true;
+			Player.dashtime = System.currentTimeMillis();
+			Player.speed*=10;
+			}
+		if(key == KeyEvent.VK_Q){
+			
+		}
 		}
 		
 		
