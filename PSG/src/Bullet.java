@@ -8,10 +8,10 @@ public class Bullet {
 	
 	Vector2F pos = new Vector2F();
 	public boolean directionIsRight;
-	public static int width=50;
-	public static int height=20;
+	public static int width=20;
+	public static int height=10;
 	Vector2F destination = new Vector2F();
-	public static double speed = 7;
+	public static double speed = 5;
 	double distance; 
 	double dx,dy;
 	
@@ -44,10 +44,10 @@ public class Bullet {
 	public void render(Graphics2D g){
 	
 		if(this.directionIsRight)
-			g.drawImage(Assets.bulletRight,(int)(getxpos()+Bullet.width),(int)getypos()+height/2,Bullet.width,Bullet.height,null);
+			g.drawImage(Assets.bulletRight,(int)(getxpos()),(int)getypos()+height/2,Bullet.width,Bullet.height,null);
 		else
-			g.drawImage(Assets.bulletLeft,(int)(getxpos()+Bullet.width),(int)getypos()+height/2,Bullet.width,Bullet.height,null);
-		
+			g.drawImage(Assets.bulletLeft,(int)(getxpos()),(int)getypos()+height/2,Bullet.width,Bullet.height,null);
+	
 			
 	}
 }

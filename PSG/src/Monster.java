@@ -1,6 +1,4 @@
 
-
-
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Rectangle;
@@ -17,6 +15,7 @@ public class Monster extends Rectangle{
 	public  int height=50;
 	private ArrayList<BufferedImage> anilist;
 	Animator ani;
+	//for spawn
 	private Random rand = new Random();
 	private Random rand_2 = new Random();
 	Vector2F tempDestination;
@@ -28,7 +27,6 @@ public class Monster extends Rectangle{
 	long timernDPS;
 	boolean hit = false;
 	boolean justKB;
-	int hitcounter;
 	int knockbackDistance;
 	int knockbackSpeed=3;
 	
@@ -65,19 +63,8 @@ private void move(boolean directionIsRight){
 	
 	
 	timern=System.currentTimeMillis();
-	if(hit){
-		if(justKB)
-		{
-		double distance = Math.sqrt(Math.pow(Math.abs(pos.xpos-tempDestination.xpos),2)+Math.pow(Math.abs(pos.ypos-tempDestination.ypos),2));
-		dx=(tempDestination.xpos-pos.xpos)/(distance/knockbackSpeed);
-		dy=(tempDestination.ypos-pos.ypos)/(distance/knockbackSpeed);
-		
-		}
-		justKB=false;
-		hitcounter++;
-		time=0;
-	}
-	else if (timern-time>=2000){
+	
+	 if (timern-time>=2000){
 		do{
 			if(directionIsRight){
 				tempDestination = new Vector2F(573-width,rand.nextFloat()*400+100);
@@ -109,27 +96,6 @@ public void tick(double deltaTime){
 		
 	
 		setBounds((int)pos.xpos, (int)pos.ypos, width, height);
-		if(this.hit)
-		{
-		move(directionIsRight);
-		if(Math.abs(pos.xpos-tempDestination.xpos) <3 && Math.abs(pos.ypos-tempDestination.ypos)<3){hit=false;
-		
-		}
-		int indexOfRecipient = Check.indexMonWithMon(new Point((int)pos.xpos,(int)pos.ypos),new Point((int)pos.xpos+this.width,(int)pos.ypos),new Point((int)pos.xpos,(int)pos.ypos+this.height), 
-				new Point((int)pos.xpos+this.width,(int)pos.ypos+this.height),this);
-			if(indexOfRecipient>=0)
-			{	
-				MonsterManager.eraseIndex.add(indexOfRecipient);
-				Player.score+=2;
-				for(int i =0; i<MonsterManager.monsterlist.size();i++){
-					if(this.equals(MonsterManager.monsterlist.get(i))){
-						MonsterManager.eraseIndex.add(i);break;
-					}
-				}
-			}
-		}
-		
-		
 		
 		
 		if (directionIsRight&& pos.xpos<=573-width || !directionIsRight && pos.xpos>=800)
@@ -160,12 +126,7 @@ public void tick(double deltaTime){
 		
 	
 	}
-	public  Vector2F getCenter(){
-		if (this.directionIsRight)
-			return new Vector2F(pos.xpos-width,pos.ypos+height/2);
-		else
-			return new Vector2F(pos.xpos+width,pos.ypos+height/2);
-	}
+	
 	
 	public int getxpos() {
 		return (int)pos.xpos;

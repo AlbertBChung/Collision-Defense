@@ -1,6 +1,3 @@
-
-
-
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.util.ArrayList;
@@ -34,40 +31,44 @@ public class BulletManager {
 			
 			if(newbulletlist.get(i).directionIsRight){
 				if(Check.CollisionBulletBlock(
-						  new Point((int) (newbulletlist.get(i).getxpos() + Bullet.width +Bullet.speed) ,
-						     (int) (newbulletlist.get(i).getypos())),
+						  new Point((int) (newbulletlist.get(i).getxpos() + Bullet.width +newbulletlist.get(i).dx) ,
+						     (int) (newbulletlist.get(i).getypos()+newbulletlist.get(i).dy)),
 						          
-						  new Point((int) (newbulletlist.get(i).getxpos() +Bullet.width +Bullet.speed) , 
-						            (int) (newbulletlist.get(i).getypos() +Bullet.height))  ))
+						  new Point((int) (newbulletlist.get(i).getxpos() +Bullet.width +newbulletlist.get(i).dx) , 
+						            (int) (newbulletlist.get(i).getypos() +Bullet.height+newbulletlist.get(i).dy))  ))
 						{
 						index.add(i);
 						}
-					else if(Check.CollisionMonster(
-						  new Point((int) (newbulletlist.get(i).getxpos() + Bullet.width +Bullet.speed) ,
-						     (int) (newbulletlist.get(i).getypos())),
+					else if(Check.CollisionBomb(
+						  new Point((int) (newbulletlist.get(i).getxpos() + Bullet.width +newbulletlist.get(i).dx) ,
+						     (int) (newbulletlist.get(i).getypos()+newbulletlist.get(i).dy)),
 						          
-						  new Point((int) (newbulletlist.get(i).getxpos() +Bullet.width +Bullet.speed) , 
-						            (int) (newbulletlist.get(i).getypos() +Bullet.height))  ))
+						  new Point((int) (newbulletlist.get(i).getxpos() +Bullet.width +newbulletlist.get(i).dx) , 
+						            (int) (newbulletlist.get(i).getypos() +Bullet.height+newbulletlist.get(i).dy))  ))
 						{
 							index.add(i);
 						}
 			}
 			else{
 				if(Check.CollisionBulletBlock(
-						  new Point((int) (newbulletlist.get(i).getxpos()-Bullet.speed) ,
-						     (int) (newbulletlist.get(i).getypos())),
+						  new
+						  Point((int) (newbulletlist.get(i).getxpos()+newbulletlist.get(i).dx) ,
+						     (int) (newbulletlist.get(i).getypos() +newbulletlist.get(i).dy )),
 						          
-						  new Point((int) (newbulletlist.get(i).getxpos()-Bullet.speed) , 
-						            (int) (newbulletlist.get(i).getypos() +Bullet.height))  ))
+						  new Point((int) (newbulletlist.get(i).getxpos()+newbulletlist.get(i).dx) , 
+						            (int) (newbulletlist.get(i).getypos()+newbulletlist.get(i).dy+newbulletlist.get(i).height))))
+								
+					
 						{
 						index.add(i);
 						}
-					else if(Check.CollisionMonster(
-						  new Point((int) (newbulletlist.get(i).getxpos()-Bullet.speed) ,
-						     (int) (newbulletlist.get(i).getypos())),
-						          
-						  new Point((int) (newbulletlist.get(i).getxpos()-Bullet.speed) , 
-						            (int) (newbulletlist.get(i).getypos() +Bullet.height))  ))
+					else if(Check.CollisionBomb(
+							  new Point((int) (newbulletlist.get(i).getxpos()+newbulletlist.get(i).dx) ,
+									     (int) (newbulletlist.get(i).getypos() +newbulletlist.get(i).dy )),
+									          
+							  new Point((int) (newbulletlist.get(i).getxpos()+newbulletlist.get(i).dx) , 
+							            (int) (newbulletlist.get(i).getypos()+newbulletlist.get(i).dy+newbulletlist.get(i).height))))
+									
 						{
 							index.add(i);
 						}

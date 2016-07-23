@@ -1,5 +1,4 @@
 
-
 import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
@@ -13,17 +12,19 @@ public class Map {
 	public static Player player = new Player();
 	BulletManager bullets = new BulletManager();
 	MonsterManager monsters = new MonsterManager();
+	BombManager bombs = new BombManager();
 	Random rng = new Random();
 	Random rng_2= new Random();
 	long time;
 	int spawnCounter;
+	
 	public Map() {
 
 	}
 	public void init(){
 		player. init();
 		bullets.init();
-
+		bombs.init();
 		
 		
 		 BufferedImage map = null;
@@ -54,10 +55,9 @@ public class Map {
 		 }
 	
 	}
-	private void makeMonster(int size, float speed){
-		boolean direction = rng.nextBoolean();
+	private void makeMonster(int size, float speed,boolean direction_right){
 		int y =rng_2.nextInt(400)+100;
-		if(direction){
+		if(direction_right){
 			Monster mon = new Monster(40,y,speed,true,size);
 			 MonsterManager.monsterlist.add(mon);
 		}
@@ -68,23 +68,24 @@ public class Map {
 	}
 	
 	public void tick(double deltaTime){
-		try{
-		tiles.tick(deltaTime);
 		
+		tiles.tick(deltaTime);
 		player.tick(deltaTime);
 		long timern = System.currentTimeMillis();
-		if (timern-time>=2000){
+		if (timern-time>=5000){
 			time = timern;
-			makeMonster(50,.5f);
+			boolean direction_right = rng.nextBoolean();
+			makeMonster(50,.5f,direction_right);
+			
 			spawnCounter++;
 			if(spawnCounter%4==0){
-				makeMonster(100,.5f);
+				makeMonster(100,.5f, direction_right);
 			}
 			
 		}
 		
 		
-		monsters.tick(deltaTime);
+		
 		
 			while(BulletManager.index.size()>0){
 				int removeAtIndex=BulletManager.index.get(0).intValue();
@@ -112,15 +113,12 @@ public class Map {
 				
 			}
 			
+		
+		
+
+		monsters.tick(deltaTime);
 		bullets.tick(deltaTime);
-		
-		
-		
-		
-		
-	}catch(Exception e){
-			this.bullets=new BulletManager(); System.out.println("Error handled!");
-			}
+		bombs.tick(deltaTime);
 	}
 	
 	
@@ -131,6 +129,7 @@ public class Map {
 		player.render(g);
 		bullets.render(g);
 		monsters.render(g);
+		bombs.render(g);
 		
 		g.setFont(new Font("Comic Sans MS	",Font.PLAIN,20));
 		g.drawString("Ammo #: "+String.valueOf(Player.ammo)+"     Health: "+String.valueOf(Player.health)+"       " +
@@ -141,7 +140,6 @@ public class Map {
 		if(timern-Player.dashCooldownTime>=1000){fraction=1;}
 		else{fraction = (double)(timern-Player.dashCooldownTime)/1000.0;}
 		g.fillRect(450,2,(int)(100*fraction),25);
-		
 		
 	}
 

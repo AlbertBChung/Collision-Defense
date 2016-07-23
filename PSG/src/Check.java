@@ -41,7 +41,7 @@ public static boolean CollisionPlayerBlock(Point p1, Point p2){
 		{
 				if(MonsterManager.monsterlist.get(i).contains(p1) || MonsterManager.monsterlist.get(i).contains(p2)){
 					
-					MonsterManager.knockback(p1, p2, i);
+					//MonsterManager.knockback(p1, p2, i);
 					return true;
 				}
 			
@@ -50,6 +50,21 @@ public static boolean CollisionPlayerBlock(Point p1, Point p2){
 		
 		return false;
 	}
+	
+public static boolean CollisionBomb(Point p1, Point p2) {
+		
+		for (int i =0; i<BombManager.bomblist.size();i++)
+		{
+				if(BombManager.bomblist.get(i).contains(p1) || BombManager.bomblist.get(i).contains(p2)){
+					BombManager.knockback(p1, p2, i);
+					return true;
+				}
+		}
+		
+		return false;
+	}
+
+
 	public static boolean CollisionReload(Point p1, Point p2){
 		for(Block block : TileManager.blocks){
 			if(block.isReloadCenter){
@@ -62,9 +77,9 @@ public static boolean CollisionPlayerBlock(Point p1, Point p2){
 		
 		return false;
 	}
-	public static int indexMonWithMon (Point p1, Point p2, Point p3, Point p4,Monster mon){
+	public static int indexBombWithMon (Point p1, Point p2, Point p3, Point p4){
 		for(int i =0;i < MonsterManager.monsterlist.size();i++){
-				if(!(MonsterManager.monsterlist.get(i).equals(mon)) && (MonsterManager.monsterlist.get(i).contains(p1) || MonsterManager.monsterlist.get(i).contains(p2) || MonsterManager.monsterlist.get(i).contains(p3) || MonsterManager.monsterlist.get(i).contains(p4))){
+				if((MonsterManager.monsterlist.get(i).contains(p1) || MonsterManager.monsterlist.get(i).contains(p2) || MonsterManager.monsterlist.get(i).contains(p3) || MonsterManager.monsterlist.get(i).contains(p4))){
 					return i;
 				}
 			}
@@ -85,4 +100,3 @@ public static boolean CollisionPlayerBlock(Point p1, Point p2){
 
 
 	
-

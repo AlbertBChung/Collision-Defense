@@ -22,12 +22,13 @@ public class MouseManager implements MouseListener, MouseMotionListener{
 
 	public void mouseClicked(MouseEvent e) {
 
-		Vector2F location= new Vector2F(e.getX(),e.getY());
 		if(Player.ammo>0){
-			if(location.xpos>Map.player.pos.xpos){
+			if(e.getX()>Map.player.pos.xpos+Map.player.width/2){
+			Vector2F location= new Vector2F(e.getX()-Bullet.width,e.getY()-Bullet.height/2);
 			BulletManager.bulletlist.add(new Bullet(Map.player.pos.xpos+Map.player.width,Map.player.pos.ypos+Map.player.height/2-Bullet.height/2,true,location));
 			}
 			else{
+			Vector2F location= new Vector2F(e.getX(),e.getY()-Bullet.height/2);
 			BulletManager.bulletlist.add(new Bullet(Map.player.pos.xpos-Bullet.width,Map.player.pos.ypos+Map.player.height/2-Bullet.height/2,false,location));
 			}
 			Player.ammo--;
