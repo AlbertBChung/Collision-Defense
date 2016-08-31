@@ -36,6 +36,7 @@ public class BombManager {
 		double distance = Math.sqrt(Math.pow(center.xpos-xContact,2)+Math.pow(center.ypos-yContact,2));
 		double xdestination = (center.xpos -xContact)*(bomblist.get(i).knockbackDistance/distance);
 		double ydestination = (center.ypos -yContact)*(bomblist.get(i).knockbackDistance/distance);
+	/*
 		while(true)
 		{
 			if(bomblist.get(i).pos.xpos+xdestination<55){xdestination+=1;}
@@ -45,8 +46,9 @@ public class BombManager {
 			else{break;}
 		
 		}
-
+*/
 		bomblist.get(i).destination=new Vector2F((float)(bomblist.get(i).getX()+xdestination),(float)(bomblist.get(i).getY()+ydestination));
+		
 	}
 	
 	
@@ -64,7 +66,9 @@ public class BombManager {
 		for(int i =0;i<bomblist.size();i++){
 			if(bomblist.get(i).hit){
 				long timern=System.currentTimeMillis();
-				if(timern-bomblist.get(i).timeHit>10000){
+				if(timern-bomblist.get(i).timeHit>30000){
+					Fire fire = new Fire(bomblist.get(i).pos.xpos-Fire.size/2,bomblist.get(i).pos.ypos-Fire.size/2);
+					FireManager.firelist.add(fire);
 					bomblist.get(i).timeHit=timern;
 					replaceBomb(i);
 				}

@@ -33,6 +33,18 @@ public static boolean CollisionPlayerBlock(Point p1, Point p2){
 		
 		return false;
 	}
+	public static boolean CollisionBombBlock(Point p1, Point p2){
+		for(Block block : TileManager.blocks){
+			if(block.isSolid() && !block.isPassable()){
+				if(block.contains(p1) || block.contains(p2)){
+					return true;
+				}
+			}
+			
+		}
+		
+		return false;
+	}
 
 	
 	public static boolean CollisionMonster(Point p1, Point p2) {

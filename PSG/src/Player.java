@@ -24,9 +24,10 @@ public class Player implements KeyListener {
 	public static int health=5;
 	public static boolean dead;
 	public static int score;
-	private int animationState = 0 ;
+	public static int animationState = 0 ;
 	private static long dashtime;
 	public static long dashCooldownTime;
+	private boolean justDied=false;
 	private ArrayList<BufferedImage> listUp;
 	Animator ani_up;
 	private ArrayList<BufferedImage> listDown;
@@ -43,7 +44,7 @@ public class Player implements KeyListener {
 	
 	
 	public Player() {
-		pos  = new Vector2F(Applet.width/2 - width/2, Applet.height/2-height/2);
+		pos  = new Vector2F(Applet.width/2 - width/2-150, Applet.height/2-height/2);
 	}
 
 	public void init() {
@@ -55,22 +56,22 @@ public class Player implements KeyListener {
 		listDeath = new ArrayList<BufferedImage>();
 		
 		listUp.add(Assets.player.getTile(0, 90, 18, 29));
-		listUp.add(Assets.player.getTile(18, 90, 18, 29));
+		//listUp.add(Assets.player.getTile(18, 90, 18, 29));
 		listUp.add(Assets.player.getTile(36, 90, 18, 29));
-		listUp.add(Assets.player.getTile(54, 90, 18, 29));
+		//listUp.add(Assets.player.getTile(54, 90, 18, 29));
 		listUp.add(Assets.player.getTile(72, 90, 18, 29));
-		listUp.add(Assets.player.getTile(90, 90,18, 29));
+		//listUp.add(Assets.player.getTile(90, 90,18, 29));
 		listUp.add(Assets.player.getTile(108, 90,18, 29));
-		listUp.add(Assets.player.getTile(126, 90, 18, 29));
+		//listUp.add(Assets.player.getTile(126, 90, 18, 29));
 		
 		listDown.add(Assets.player.getTile(0, 61, 18, 29));
-		listDown.add(Assets.player.getTile(18, 61, 18, 29));
+		//listDown.add(Assets.player.getTile(18, 61, 18, 29));
 		listDown.add(Assets.player.getTile(36, 61, 18, 29));
-		listDown.add(Assets.player.getTile(54, 61, 18, 29));
+		//listDown.add(Assets.player.getTile(54, 61, 18, 29));
 		listDown.add(Assets.player.getTile(72, 61, 18, 29));
-		listDown.add(Assets.player.getTile(90, 61,18, 29));
+		//listDown.add(Assets.player.getTile(90, 61,18, 29));
 		listDown.add(Assets.player.getTile(108,61,18, 29));
-		listDown.add(Assets.player.getTile(126, 61, 18, 29));
+		//listDown.add(Assets.player.getTile(126, 61, 18, 29));
 		
 		
 		listRight.add(Assets.player.getTile(0, 119, 18, 31));
@@ -83,9 +84,21 @@ public class Player implements KeyListener {
 		listIdle.add(Assets.player.getTile(18, 32, 18, 29));
 		listIdle.add(Assets.player.getTile(36, 32, 18, 29));
 		listIdle.add(Assets.player.getTile(54, 32, 18, 29));
-		
-		listDeath.add(Assets.player.getTile(0, 16, 16, 16));
-		listDeath.add(Assets.player.getTile(16,16, 16, 16));
+		int helper=0;
+		listDeath.add(Assets.player.getTile(helper, 183, 21, 58));
+		listDeath.add(Assets.player.getTile(helper+=21, 183, 21, 58));
+		listDeath.add(Assets.player.getTile(helper+=21, 183, 21, 58));
+		listDeath.add(Assets.player.getTile(helper+=21, 183, 21, 58));
+		listDeath.add(Assets.player.getTile(helper+=21, 183, 21, 58));
+		listDeath.add(Assets.player.getTile(helper+=21, 183, 21, 58));
+		listDeath.add(Assets.player.getTile(helper+=21, 183, 21, 58));
+		listDeath.add(Assets.player.getTile(helper+=21, 183, 21, 58));
+		listDeath.add(Assets.player.getTile(helper+=21, 183, 21, 58));
+		listDeath.add(Assets.player.getTile(helper+=21, 183, 21, 58));
+		listDeath.add(Assets.player.getTile(helper+=21, 183, 21, 58));
+		listDeath.add(Assets.player.getTile(helper+=21, 183, 21, 58));
+		listDeath.add(Assets.player.getTile(helper+=21, 183, 21, 58));
+		listDeath.add(Assets.player.getTile(helper+=21, 183, 21, 58));
 		
 		ani_up = new Animator(listUp);
 		ani_up .setSpeed(180);
@@ -242,9 +255,7 @@ public class Player implements KeyListener {
 		if (!up && !down && !left && !right && !dead){
 			animationState = 4;
 		}
-		if(dead){
-			animationState = 5;
-		}
+		
 		
 		
 	}
@@ -271,8 +282,17 @@ public class Player implements KeyListener {
 			if (!up && !down && !left && !right){ani_idle.update(System.currentTimeMillis());}
 		}
 		if(animationState == 5){
+			if(!justDied){
+				this.pos.xpos-=(Player.width*1.1666667)-Player.width-4;
+				this.pos.ypos-=Player.height-(1.0/70.0)-5;
+				Player.height*=2;
+				Player.width*=1.1666667;
+				
+			}
+			
+			justDied=true;
 			g.drawImage(ani_death.sprite,(int)pos.xpos, (int)pos.ypos, width,height,null);
-			if (dead){ani_death.update(System.currentTimeMillis());}
+			if (dead && !ani_death.playerDone){ani_death.update(System.currentTimeMillis());}
 		}
 		
 		}
@@ -282,6 +302,7 @@ public class Player implements KeyListener {
 		if(key == KeyEvent.VK_W){
 			up = true;
 			isJumping = true;
+			Applet.printScore=true;
 		}
 		if(key == KeyEvent.VK_S){
 			down = true;

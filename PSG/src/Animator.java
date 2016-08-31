@@ -9,7 +9,8 @@ public class Animator {
 	private volatile boolean running = false;
 	public BufferedImage sprite;
 	private long prevTime, speed;
-	private int frameAtPause, currentFrame;
+	public int frameAtPause, currentFrame;
+	public  boolean playerDone;
 	
 	public Animator(ArrayList<BufferedImage> frames) {
 		this.frames = frames;
@@ -27,8 +28,12 @@ public class Animator {
 					
 					
 				}catch(IndexOutOfBoundsException e){
-					 reset(); 
-					sprite = frames.get(currentFrame);
+					reset(); 
+					 sprite = frames.get(currentFrame);
+					 if(Player.animationState==5){
+							playerDone=true;
+							sprite=frames.get(frames.size()-1);
+						}
 				}
 				prevTime=time;
 			}

@@ -10,6 +10,8 @@ public class Monster extends Rectangle{
 
 	public Vector2F pos = new Vector2F();
 	private float speed;
+	public static float speedSmallRef = .2F;
+	public static float speedBigRef = .1F;
 	private boolean directionIsRight;
 	public  int width=50;
 	public  int height=50;
@@ -17,7 +19,6 @@ public class Monster extends Rectangle{
 	Animator ani;
 	//for spawn
 	private Random rand = new Random();
-	private Random rand_2 = new Random();
 	Vector2F tempDestination;
 	double dx;
 	double dy;
@@ -25,10 +26,6 @@ public class Monster extends Rectangle{
 	long timern;
 	long timeDPS;
 	long timernDPS;
-	boolean hit = false;
-	boolean justKB;
-	int knockbackDistance;
-	int knockbackSpeed=3;
 	
 	public Monster(float xpos, float ypos, float speed, boolean directionIsRight, int size){
 		pos.xpos=xpos;
@@ -36,9 +33,7 @@ public class Monster extends Rectangle{
 		this.speed=speed;
 		this.directionIsRight=directionIsRight;
 		this.width=size;
-		this.height=size;
-		if (size == 100) {knockbackDistance = 100;}
-		else if (size == 50){knockbackDistance = 200;}		
+		this.height=size;	
 
 		anilist = new ArrayList<BufferedImage>();
 		anilist.add(Assets.player.getTile(0, 16, 16, 16));
@@ -113,6 +108,7 @@ public void tick(double deltaTime){
 					
 					if(Player.health<=0){
 						Player.dead=true;
+						
 					}
 				}
 				

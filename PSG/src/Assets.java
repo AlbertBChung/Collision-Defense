@@ -14,6 +14,12 @@ public class Assets {
 	public static BufferedImage reload_1;
 	public static BufferedImage bulletRight;
 	public static BufferedImage bulletLeft;
+	public static BufferedImage bomb_1;
+	public static BufferedImage bomb_2;
+	public static BufferedImage target;
+	public static BufferedImage fire_1;
+	public static BufferedImage fire_2;
+	public static BufferedImage fire_3;
 
 	
 	public void init(){
@@ -25,6 +31,13 @@ public class Assets {
 		reload_1 = blocks.getTile(48, 0, 16, 16);
 		bulletRight = player.getTile(32, 0, 16, 16);
 		bulletLeft = player.getTile(48,0,16,16);
+		bomb_1= blocks.getTile(64, 0, 16, 16);
+		bomb_2= blocks.getTile(80, 0, 16, 16);
+		target=blocks.getTile(96, 0, 16, 16);
+		fire_1=blocks.getTile(112,0,16,16);
+		fire_2=blocks.getTile(112+16,0,16,16);
+		fire_3=blocks.getTile(112+32,0,16,16);
+		
 	}
 	
 	public static BufferedImage getStone_1() {
@@ -38,5 +51,14 @@ public class Assets {
 	}
 	public static BufferedImage getReload_1() {
 		return reload_1;
+	}
+	public static BufferedImage getbomb_1() {
+		return bomb_1;
+	}
+	public static BufferedImage getBomb_2() {
+		return bomb_2;
+	}
+	public static BufferedImage getTarget(){
+		return target;
 	}
 }

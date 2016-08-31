@@ -1,4 +1,5 @@
 
+import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
@@ -13,10 +14,12 @@ public class Map {
 	BulletManager bullets = new BulletManager();
 	MonsterManager monsters = new MonsterManager();
 	BombManager bombs = new BombManager();
+	FireManager flames = new FireManager();
 	Random rng = new Random();
 	Random rng_2= new Random();
 	long time;
 	int spawnCounter;
+	int gameoverpos=1000;
 	
 	public Map() {
 
@@ -68,18 +71,28 @@ public class Map {
 	}
 	
 	public void tick(double deltaTime){
-		
 		tiles.tick(deltaTime);
-		player.tick(deltaTime);
+		if(!Player.dead)
+			{
+			player.tick(deltaTime);
+			}
+		else{
+			player.animationState=5;
+		}
 		long timern = System.currentTimeMillis();
-		if (timern-time>=5000){
+		if (timern-time>=MonsterManager.spawnRate){
 			time = timern;
 			boolean direction_right = rng.nextBoolean();
-			makeMonster(50,.5f,direction_right);
+			makeMonster(50,Monster.speedSmallRef,direction_right);
 			
 			spawnCounter++;
 			if(spawnCounter%4==0){
-				makeMonster(100,.5f, direction_right);
+				makeMonster(100,Monster.speedBigRef, direction_right);
+			}
+			if(spawnCounter%5==0 && Monster.speedSmallRef<=3.2){
+				MonsterManager.spawnRate-=800;
+				Monster.speedSmallRef+=.3F;
+				Monster.speedBigRef+=.16F;
 			}
 			
 		}
@@ -103,14 +116,26 @@ public class Map {
 				MonsterManager.monsterlist.remove(removeAtIndex);
 				MonsterManager.eraseIndex.remove(0);
 
-				// mon mon mon Mon
 				for(int i =0;i<MonsterManager.eraseIndex.size();i++){
 					if(MonsterManager.eraseIndex.get(i)>removeAtIndex){
 						MonsterManager.eraseIndex.set(i, MonsterManager.eraseIndex.get(i)-1);
 					}
-					
-				}
 				
+					
+				}	
+			}
+			while(FireManager.eraseIndex.size()>0){
+				int removeAtIndex=FireManager.eraseIndex.get(0).intValue();
+				FireManager.firelist.remove(removeAtIndex);
+				FireManager.eraseIndex.remove(0);
+
+				for(int i =0;i<FireManager.eraseIndex.size();i++){
+					if(FireManager.eraseIndex.get(i)>removeAtIndex){
+						FireManager.eraseIndex.set(i, FireManager.eraseIndex.get(i)-1);
+					}
+				
+					
+				}	
 			}
 			
 		
@@ -119,6 +144,7 @@ public class Map {
 		monsters.tick(deltaTime);
 		bullets.tick(deltaTime);
 		bombs.tick(deltaTime);
+		flames.tick(deltaTime);
 	}
 	
 	
@@ -130,17 +156,33 @@ public class Map {
 		bullets.render(g);
 		monsters.render(g);
 		bombs.render(g);
+		flames.render(g);
 		
-		g.setFont(new Font("Comic Sans MS	",Font.PLAIN,20));
-		g.drawString("Ammo #: "+String.valueOf(Player.ammo)+"     Health: "+String.valueOf(Player.health)+"       " +
-				"Score: "+String.valueOf(Player.score), 20, 20);
-		g.drawRect(450, 2, 100, 25);
+		g.setFont(new Font("Comic Sans MS",Font.PLAIN,20));
+		g.drawString("     Health: "+String.valueOf(Player.health)+"       " +
+				"Score: "+String.valueOf(Player.score)+"          Dash:  ", 20, 20);
+		g.drawRect(400, 2, 100, 25);
 		long timern=System.currentTimeMillis();
 		double fraction;
 		if(timern-Player.dashCooldownTime>=1000){fraction=1;}
 		else{fraction = (double)(timern-Player.dashCooldownTime)/1000.0;}
-		g.fillRect(450,2,(int)(100*fraction),25);
-		
+		g.setColor(Color.GREEN);
+		g.fillRect(400,2,(int)(100*fraction),25);
+		g.setColor(Color.WHITE);
+		if (Applet.ran){
+		g.drawString("Name: "+Applet.name,660,20);
+		}
+		else{
+			g.drawString("Name: "+Main.name,660,20);
+		}
+		if(player.dead){
+			g.setFont(new Font("Comic Sans MS", Font.BOLD, 90));
+			g.drawString("Game Over. Your Score: "+ player.score, gameoverpos, 100);
+			if(gameoverpos!=0){
+				gameoverpos-=10;
+			}
+		}
+		g.drawImage(Assets.getTarget(),MouseManager.x-25,MouseManager.y-25,50,50,null);
 	}
 
 }

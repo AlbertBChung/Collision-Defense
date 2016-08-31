@@ -48,7 +48,6 @@ public class IDGameLoop extends JPanel implements Runnable{
 		
 	//initialization
 	init();	
-		
 	long lastTime = System.nanoTime();
 	//added 2 zero
 	double nsPerTick = 1000000000D / currFPS;
@@ -58,6 +57,9 @@ public class IDGameLoop extends JPanel implements Runnable{
 	double deltaTime = 0;	
 	
 	while(running){
+		if(Applet.stop){
+			running=false;
+		}
 		long now = System.nanoTime();
 		deltaTime += (now - lastTime)/nsPerTick;
 		lastTime = now;

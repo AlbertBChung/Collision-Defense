@@ -8,7 +8,7 @@ public class MonsterManager {
 		
 		public static ArrayList<Monster> monsterlist = new ArrayList<Monster>();
 		public static ArrayList<Integer> eraseIndex = new ArrayList<Integer>();
-		
+		public static int spawnRate=10000;
 		public MonsterManager() { 
 			
 		}

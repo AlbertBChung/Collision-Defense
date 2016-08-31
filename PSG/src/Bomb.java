@@ -1,6 +1,8 @@
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Rectangle;
+import java.awt.image.BufferedImage;
+import java.util.ArrayList;
 
 
 public class Bomb extends Rectangle {
@@ -16,12 +18,20 @@ public class Bomb extends Rectangle {
 	double dy;
 	public boolean placedRight=false;
 	public long timeHit;
+	private ArrayList<BufferedImage> anilist;
+	Animator ani;
 	
 	public Bomb(Vector2F position, boolean placedRight) {
 		pos=position;
 		hit=false;
 		destination=position;
 		this.placedRight=placedRight;
+		anilist=new ArrayList<BufferedImage>();
+		anilist.add(Assets.bomb_1);
+		anilist.add(Assets.bomb_2);
+		ani = new Animator(anilist);
+		ani.setSpeed(90);
+		ani.play();
 	}
 	public void tick(double deltaTime){
 		
@@ -42,13 +52,24 @@ public class Bomb extends Rectangle {
 					new Point((int)pos.xpos+this.width,(int)pos.ypos+this.height));
 				if(indexOfRecipient>=0)
 				{	
+					boolean exists=false;
+					for(int i =0;i<MonsterManager.eraseIndex.size();i++){
+						if(MonsterManager.eraseIndex.get(i)==indexOfRecipient){
+							exists=true;		
+						}
+					}
+					if(!exists){
 					MonsterManager.eraseIndex.add(indexOfRecipient);
-					Player.score+=2;
+					Player.score++;
 					for(int i =0; i<BombManager.bomblist.size();i++){
 						if(this.equals(BombManager.bomblist.get(i))){
+							Fire fire = new Fire(BombManager.bomblist.get(i).pos.xpos-Fire.size/2,BombManager.bomblist.get(i).pos.ypos-Fire.size/2);
+							FireManager.firelist.add(fire);
 							BombManager.replaceBomb(i);	
 						}
 					}
+					}
+					
 				}
 		}
 		
@@ -59,7 +80,21 @@ public class Bomb extends Rectangle {
 		this.pos.ypos+=dy;
 		
 		
-		if(Math.abs(pos.xpos-destination.xpos)<3 && Math.abs(pos.ypos-destination.ypos)<3){
+		if(Check.CollisionBombBlock(
+				  new Point((int) (pos.xpos + this.width +dx) ,
+						     (int) (pos.ypos+dy)),
+						          
+				  new Point((int) (pos.xpos + this.width +dx) , 
+				            (int) (pos.ypos+dy+this.height))) && placedRight){
+			dx=0;
+			dy=0;
+		}
+		else if(Check.CollisionBombBlock(
+				  new Point((int) (pos.xpos  +dx) ,
+						     (int) (pos.ypos+dy)),
+						          
+				  new Point((int) (pos.xpos  +dx) , 
+				            (int) (pos.ypos+dy+this.height))) && !placedRight){
 			dx=0;
 			dy=0;
 		}
@@ -67,13 +102,14 @@ public class Bomb extends Rectangle {
 		
 	}
 	public void render(Graphics2D g){
-		g.fillRect((int)pos.xpos,(int)pos.ypos,width,height);
-	}
+		g.drawImage(ani.sprite,(int)pos.xpos, (int)pos.ypos, width,height,null);
+		ani.update(System.currentTimeMillis());}
+	
 	public  Vector2F getCenter(){
 		if(placedRight)
-			return new Vector2F(pos.xpos+width/2,pos.ypos+height/2);
+			return new Vector2F(pos.xpos+width,pos.ypos+height/2);
 		else
-			return new Vector2F(pos.xpos+width/2,pos.ypos+height/2);
+			return new Vector2F(pos.xpos,pos.ypos+height/2);
 			
 	}
 
