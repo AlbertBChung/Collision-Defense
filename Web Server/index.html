@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+ <html>
+ <title>Collision Defense</title>
+ 
+ <body>
+    <header>
+        <h1>Collision Defense</h1>
+        <p>Instructions: Hit the bombs so that they collide with the Slimes. Don't let them get too close.</p>
+    </header>
+    <h3>After each game, remember to click the buttom below to submit name and score to online server!</h3>
+        <button onclick="getScore()">Submit and view Scoreboard</button>
+        <p></p>
+        <a href="error.html">Not Working? Click here</a>
+        <p></p>
+        <a href="log.html">Click here to view patch notes/updates</a>
+        <br>
+        <br>
+         <div >
+ 			<applet name="CollisionDefense" code="Applet.class" width="1280" height="720">
+ 			You dont have java installed.
+	 		</applet>
+		</div> 
+    
+ </body>
+
+ <script type="text/javascript">
+     function getScore(){
+        var name = document.applets[0].getName();
+        var score = document.applets[0].getScore();
+        window.location.href = "score.php?khuvg=74108520"+score+"74123698&livwh="+name;
+            //newScore is khuvg = 
+            //newName is livwh = 
+     }
+
+
+ </script>
+ 
+
+
+</html>
+  
+ 
+ 
